@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="New Customer Form Validation" parallel="false">
+
+	<test name="Run test on Chrome browser">
+		<parameter name="browser" value="chrome" />		
+		<packages>
+			<package name ="com.bankguru.newcustomer"/>
+		</packages>
+	</test> <!-- Test -->
+	
+	<test name="Run test on Chrome Headless browser">
+		<parameter name="browser" value="headless" />		
+		<packages>
+			<package name ="com.bankguru.newcustomer"/>
+		</packages>
+	</test> <!-- Test -->
+	
+	<test name="Run test on Chrome Firefox browser">
+		<parameter name="browser" value="firefox" />		
+		<packages>
+			<package name ="com.bankguru.newcustomer"/>
+		</packages>
+	</test> <!-- Test -->
+
+</suite> <!-- Suite -->
