@@ -19,7 +19,7 @@ public class EditCustomerPageObjects extends AbstractPage {
 	}
 	
 	public void fillAddress(String address) {
-		sendKeyToElement(driver, EditCustomerPageUI.ADDRESS_TEXTBOX, address);
+		sendKeyToElement(driver, EditCustomerPageUI.ADDRESS_TEXTAREA, address);
 	}
 
 	public void fillCity(String city) {
