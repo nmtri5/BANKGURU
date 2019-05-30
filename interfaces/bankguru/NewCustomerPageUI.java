@@ -47,4 +47,16 @@ public class NewCustomerPageUI {
 	public static final String EMAIL_NOT_VALID_ERROR_MESSAGE = "//label[@id = 'message9' and text()='Email-ID is not valid']";
 	public static final String EMAIL_FIRST_BLANK_ERROR_MESSAGE = "//label[@id = 'message9' and text()='First character can not have space']";
 
+	public static final String SUCCESS_FORM = "//p[@class='heading3' and text() = 'Customer Registered Successfully!!!']";
+	public static final String CUSTOMER_ID = "//td[text() = 'Customer ID']/following-sibling::td";
+	public static final String VERIFY_USERNAME = "//td[text() = 'Customer Name']/following-sibling::td";
+	public static final String VERIFY_GENDER = "//td[text() = 'Gender']/following-sibling::td";
+	public static final String VERIFY_DOB = "//td[text() = 'Birthdate']/following-sibling::td";
+	public static final String VERIFY_ADDRESS = "//td[text() = 'Address']/following-sibling::td";
+	public static final String VERIFY_CITY = "//td[text() = 'City']/following-sibling::td";
+	public static final String VERIFY_STATE = "//td[text() = 'State']/following-sibling::td";
+	public static final String VERIFY_PIN = "//td[text() = 'Pin']/following-sibling::td";
+	public static final String VERIFY_MOBILE = "//td[text() = 'Mobile No.']/following-sibling::td";
+	public static final String VERIFY_EMAIL = "//td[text() = 'Email']/following-sibling::td";
+	
 }

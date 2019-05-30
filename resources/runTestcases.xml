@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="New Customer Form Validation" parallel="false">
 
-	<test name="Run test on Chrome browser">
-		<parameter name="browser" value="chrome" />		
+<!-- 	<test name="Run test on Chrome browser">
+		<parameter name="browser" value="chrome" />
 		<packages>
-			<package name ="com.bankguru.newcustomer"/>
+			<package name="com.bankguru.newcustomer" />
+			<package name="com.bankguru.editcustomer" />
+			<package name="com.bankguru.payment" />
 		</packages>
-	</test> <!-- Test -->
-	
+	</test>
+
 	<test name="Run test on Chrome Headless browser">
-		<parameter name="browser" value="headless" />		
+		<parameter name="browser" value="headless" />
 		<packages>
-			<package name ="com.bankguru.newcustomer"/>
+			<package name="com.bankguru.newcustomer" />
+			<package name="com.bankguru.editcustomer" />
+			<package name="com.bankguru.payment" />
 		</packages>
-	</test> <!-- Test -->
-	
-	<test name="Run test on Chrome Firefox browser">
-		<parameter name="browser" value="firefox" />		
+	</test> -->
+
+	<test name="Run test on IE browser">
+		<parameter name="browser" value="ie" />
 		<packages>
-			<package name ="com.bankguru.newcustomer"/>
+			<package name="com.bankguru.newcustomer" />
+			<package name="com.bankguru.editcustomer" />
+			<package name="com.bankguru.payment" />
 		</packages>
-	</test> <!-- Test -->
+	</test>
+
+<!-- 	<test name="Run test on Chrome Firefox browser">
+		<parameter name="browser" value="firefox" />
+		<packages>
+			<package name="com.bankguru.newcustomer" />
+			<package name="com.bankguru.editcustomer" />
+			<package name="com.bankguru.payment" />
+		</packages>
+	</test> -->
+
+	<!-- <test name="Run test on Chrome browser"> <parameter name="browser" 
+		value="chrome" /> <classes> <class name="com.bankguru.payment.TransactionFlow" 
+		/> </classes> </test> -->
 
 </suite> <!-- Suite -->
