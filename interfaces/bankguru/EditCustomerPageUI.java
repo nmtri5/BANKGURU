@@ -1,7 +1,7 @@
 package bankguru;
 
 public class EditCustomerPageUI {
-	public static final String BARON = "//h2[@class='barone']";
+	public static final String BARONE = "//h2[@class='barone']";
 	
 	public static final String CUSTOMER_ID_TEXTBOX = "//input[@name='cusid']";
 	public static final String SUBMIT_BUTTON = "//input[@name='AccSubmit']";
@@ -41,6 +41,7 @@ public class EditCustomerPageUI {
 	public static final String EMAIL_BLANK_ERROR = "//label[@id ='message9' and text() = 'Email-ID must not be blank']";
 	public static final String EMAIL_FORMAT_ERROR = "//label[@id ='message9' and text() = 'Email-ID is not valid']";
 
+	public static final String EDIT_FORM = "//p[@class='heading3' and text() = 'Edit Customer']";
 	public static final String SUCCESS_FORM = "//p[@class='heading3' and text() = 'Customer details updated Successfully!!!']";
 	public static final String CUSTOMER_ID = "//td[text() = 'Customer ID']/following-sibling::td";
 	public static final String VERIFY_USERNAME = "//td[text() = 'Customer Name']/following-sibling::td";

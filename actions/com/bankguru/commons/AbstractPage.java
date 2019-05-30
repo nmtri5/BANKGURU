@@ -56,18 +56,22 @@ public class AbstractPage {
 	}
 
 	public void acceptAlert(WebDriver driver) {
+		waitForAlertPresence(driver);
 		driver.switchTo().alert().accept();
 	}
 
 	public void cancelAlert(WebDriver driver) {
+		waitForAlertPresence(driver);
 		driver.switchTo().alert().dismiss();
 	}
 
 	public String getTextAlert(WebDriver driver) {
+		waitForAlertPresence(driver);
 		return driver.switchTo().alert().getText();
 	}
 
 	public void sendKeyToAlert(WebDriver driver, String key) {
+		waitForAlertPresence(driver);
 		driver.switchTo().alert().sendKeys(key);
 	}
 
@@ -342,7 +346,7 @@ public class AbstractPage {
 
 	public void clickOnKeyBoard(WebDriver driver, Keys key) {
 		if (driver.toString().contains("firefox") || driver.toString().contains("internet explorer")){
-			sendKeyboardToElement(driver, EditCustomerPageUI.BARON, key);
+			sendKeyboardToElement(driver, EditCustomerPageUI.BARONE, key);
 		} else {
 			Keyboard keyboard = ((HasInputDevices) driver).getKeyboard();
 			keyboard.pressKey(Keys.TAB);

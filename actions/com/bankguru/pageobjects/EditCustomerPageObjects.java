@@ -126,8 +126,12 @@ public class EditCustomerPageObjects extends AbstractPage {
 	}
 		return a;
 	}
+	
+	public boolean isEditCustomerFormDisplayed() {
+		return isElementDisplayed(driver, EditCustomerPageUI.EDIT_FORM);
+	}
 
-	public boolean isEditCustomerFormLoadedSuccessful() {
+	public boolean isEditCustomerSuccessfully() {
 		return isElementDisplayed(driver, EditCustomerPageUI.SUCCESS_FORM);
 	}
 

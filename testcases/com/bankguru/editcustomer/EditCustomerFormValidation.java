@@ -67,7 +67,7 @@ public class EditCustomerFormValidation extends AbstractTest {
 	public void TC_05_ValidCustomerID() {
 		editCustomerPage.fillCustomerID("56599");
 		editCustomerPage.clickSubmitButton();
-		Assert.assertTrue(editCustomerPage.isEditCustomerFormLoadedSuccessful());
+		Assert.assertTrue(editCustomerPage.isEditCustomerFormDisplayed());
 
 	}
 

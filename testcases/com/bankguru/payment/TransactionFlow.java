@@ -72,7 +72,7 @@ public class TransactionFlow extends AbstractTest {
 
 	private int randomeNumber() {
 		Random ran = new Random();
-		return ran.nextInt(999);
+		return ran.nextInt(999999);
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class TransactionFlow extends AbstractTest {
 
 		editCustomer.clickConfirmButton();
 
-		Assert.assertTrue(editCustomer.isEditCustomerFormLoadedSuccessful());
+		Assert.assertTrue(editCustomer.isEditCustomerSuccessfully());
 		Assert.assertTrue(editCustomer.isAddressMatch(editAddress));
 		Assert.assertTrue(editCustomer.isCityMatch(editCity));
 		Assert.assertTrue(editCustomer.isStateMatch(editState));
