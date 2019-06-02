@@ -77,155 +77,305 @@ public class TransactionFlow extends AbstractTest {
 
 	@Test
 	public void TC_01_CreateNewCustomer() {
+		log.info("Create New Customer - Step 01: Fill in Customer Name");
 		newCustomer.fillCustomerName(customerName);
+		
+		log.info("Create New Customer - Step 02: Fill in Gender radio box");
 		newCustomer.checkToGenderRadioBox(gender);
+		
+		log.info("Create New Customer - Step 03: Fill in Date of Birth");
 		newCustomer.fillDOB(dob);
+		
+		log.info("Create New Customer - Step 04: Fill in Address");
 		newCustomer.fillAddress(address);
+		
+		log.info("Create New Customer - Step 05: Fill in City");
 		newCustomer.fillCity(city);
+		
+		log.info("Create New Customer - Step 06: Fill in State");
 		newCustomer.fillState(state);
+		
+		log.info("Create New Customer - Step 07: Fill in Pin");
 		newCustomer.fillPIN(pin);
+		
+		log.info("Create New Customer - Step 08: Fill in Mobile");
 		newCustomer.fillMobileNumber(mobile);
+		
+		log.info("Create New Customer - Step 09: Fill in Email");
 		newCustomer.fillEmail(email);
+		
+		log.info("Create New Customer - Step 10: Fill in Password");
 		newCustomer.fillPassword(password);
 
+		log.info("Create New Customer - Step 11: Click the submit button");
 		newCustomer.clickSubmitButton();
 
 		customerID = newCustomer.getCustomerID();
 
-		Assert.assertTrue(newCustomer.isNewCustomerFormInformationDisplayed());
-		Assert.assertTrue(newCustomer.isUsernameMatch(customerName));
-		Assert.assertTrue(newCustomer.isGenderMatch(gender));
-		Assert.assertTrue(newCustomer.isDOBMatch(dob));
-		Assert.assertTrue(newCustomer.isAddressMatch(address));
-		Assert.assertTrue(newCustomer.isCityMatch(city));
-		Assert.assertTrue(newCustomer.isStateMatch(state));
-		Assert.assertTrue(newCustomer.isPinMatch(pin));
-		Assert.assertTrue(newCustomer.isMobileNumberMatch(mobile));
-		Assert.assertTrue(newCustomer.isEmailMatch(email));
+		log.info("Create New Customer - Step 12: Check if the customer information form display");
+		verifyTrue(newCustomer.isNewCustomerFormInformationDisplayed());
+		
+		log.info("Create New Customer - Step 13: Check if the customer name match");
+		verifyTrue(newCustomer.isUsernameMatch(customerName));
+		
+		log.info("Create New Customer - Step 14: Check if the gender match");
+		verifyTrue(newCustomer.isGenderMatch(gender));
+		
+		log.info("Create New Customer - Step 15: Check if the date of birth match");
+		verifyTrue(newCustomer.isDOBMatch(dob));
+		
+		log.info("Create New Customer - Step 16: Check if the address match");
+		verifyTrue(newCustomer.isAddressMatch(address));
+		
+		log.info("Create New Customer - Step 17: Check if the city match");
+		verifyTrue(newCustomer.isCityMatch(city));
+		
+		log.info("Create New Customer - Step 18: Check if the state match");
+		verifyTrue(newCustomer.isStateMatch(state));
+		
+		log.info("Create New Customer - Step 19: Check if the pin match");
+		verifyTrue(newCustomer.isPinMatch(pin));
+		
+		log.info("Create New Customer - Step 20: Check if the mobile number match");
+		verifyTrue(newCustomer.isMobileNumberMatch(mobile));
+		
+		log.info("Create New Customer - Step 21: Check if the email match");
+		verifyTrue(newCustomer.isEmailMatch(email));
 	}
 
 	@Test
 	public void TC_02_EditCustomer() {
+		log.info("Edit Customer - Step 01: Open Edit Customer page");
 		editCustomer = (EditCustomerPageObjects) newCustomer.openAnySubPage(driver, "Edit Customer");
+		
+		log.info("Edit Customer - Step 02: Fill in Customer ID");
 		editCustomer.fillCustomerID(customerID);
+		
+		log.info("Edit Customer - Step 03: Click Submit button");
 		editCustomer.clickSubmitButton();
 
+		log.info("Edit Customer - Step 04: Edit Address");
 		editCustomer.editAddress(editAddress);
+		
+		log.info("Edit Customer - Step 05: Edit City");
 		editCustomer.editCity(editCity);
+		
+		log.info("Edit Customer - Step 06: Edit State");
 		editCustomer.editState(editState);
+		
+		log.info("Edit Customer - Step 07: Edit Pin");
 		editCustomer.editPIN(editPin);
+		
+		log.info("Edit Customer - Step 08: Edit Mobile");
 		editCustomer.editMobileNumber(editMobile);
+		
+		log.info("Edit Customer - Step 09: Edit Email");
 		editCustomer.editEmail(editEmail);
 
+		log.info("Edit Customer - Step 10: Click Submit button");
 		editCustomer.clickConfirmButton();
 
-		Assert.assertTrue(editCustomer.isEditCustomerSuccessfully());
-		Assert.assertTrue(editCustomer.isAddressMatch(editAddress));
-		Assert.assertTrue(editCustomer.isCityMatch(editCity));
-		Assert.assertTrue(editCustomer.isStateMatch(editState));
-		Assert.assertTrue(editCustomer.isPinMatch(editPin));
-		Assert.assertTrue(editCustomer.isMobileNumberMatch(editMobile));
-		Assert.assertTrue(editCustomer.isEmailMatch(editEmail));
+		log.info("Edit Customer - Step 11: Check if success form display");
+		verifyTrue(editCustomer.isEditCustomerSuccessfully());
+		
+		log.info("Edit Customer - Step 12: Check if the address match");
+		verifyTrue(editCustomer.isAddressMatch(editAddress));
+		
+		log.info("Edit Customer - Step 13: Check if the city match");
+		verifyTrue(editCustomer.isCityMatch(editCity));
+		
+		log.info("Edit Customer - Step 14: Check if the state match");
+		verifyTrue(editCustomer.isStateMatch(editState));
+		
+		log.info("Edit Customer - Step 15: Check if the pin match");
+		verifyTrue(editCustomer.isPinMatch(editPin));
+		
+		log.info("Edit Customer - Step 16: Check if the mobile number match");
+		verifyTrue(editCustomer.isMobileNumberMatch(editMobile));
+		
+		log.info("Edit Customer - Step 17: Check if the email match");
+		verifyTrue(editCustomer.isEmailMatch(editEmail));
 	}
 
 	@Test
 	public void TC_03_CreateNewAccount() {
+		log.info("Create New Account - Step 01: Open New Account page");
 		newAccount = (NewAccountPageObjects) editCustomer.openAnySubPage(driver, "New Account");
 
+		log.info("Create New Account - Step 02: Input Customer ID");
 		newAccount.inputCustomerID(customerID);
+		
+		log.info("Create New Account - Step 03: Select Account Type");
 		newAccount.selectAccountType(type);
+		
+		log.info("Create New Account - Step 04: Input Initial deposit");
 		newAccount.inputInitialDeposit(initialAmount);
+		
 		finalAmount = initialAmount;
 
+		log.info("Create New Account - Step 05: Click submit button");
 		newAccount.clickSubmitButton();
 
 		accountNumber = newAccount.getAccountNumber();
-		Assert.assertTrue(newAccount.isAccountCreatedSuccess());
-		Assert.assertTrue(newAccount.isCustomerIDMatch(customerID));
-		Assert.assertTrue(newAccount.isCustomerNameMatch(customerName));
-		Assert.assertTrue(newAccount.isEmailMatch(editEmail));
-		Assert.assertTrue(newAccount.isAccountTypeMatch(type));
-		Assert.assertTrue(newAccount.isOpeningDateCorrect());
-		Assert.assertTrue(newAccount.isCurrentAmountMatch(initialAmount));
+		
+		log.info("Create New Account - Step 06: Check if account creation success form display");
+		verifyTrue(newAccount.isAccountCreatedSuccess());
+		
+		log.info("Create New Account - Step 07: Check if Customer ID match");
+		verifyTrue(newAccount.isCustomerIDMatch(customerID));
+		
+		log.info("Create New Account - Step 08: Check if Customer Name match");
+		verifyTrue(newAccount.isCustomerNameMatch(customerName));
+		
+		log.info("Create New Account - Step 09: Check if Email match");
+		verifyTrue(newAccount.isEmailMatch(editEmail));
+		
+		log.info("Create New Account - Step 10: Check if Account Type match");
+		verifyTrue(newAccount.isAccountTypeMatch(type));
+		
+		log.info("Create New Account - Step 11: Check if Opening date match");
+		verifyTrue(newAccount.isOpeningDateCorrect());
+		
+		log.info("Create New Account - Step 12: Check if Current Amount match");
+		verifyTrue(newAccount.isCurrentAmountMatch(initialAmount));
 	}
 
 	@Test
-	public void TC_04_TransferMoney() {
+	public void TC_04_DepositMoney() {
+		log.info("Deposit Money - Step 01: Open Deposit page");
 		depositPage = (DepositPageObjects) newAccount.openAnySubPage(driver, "Deposit");
 
+		log.info("Deposit Money - Step 02: Input Account Number");
 		depositPage.inputAccountNo(accountNumber);
+		
+		log.info("Deposit Money - Step 03: Input Amount to Deposit");
 		depositPage.inputAmount(addedAmount);
+		
+		log.info("Deposit Money - Step 04: Input Description");
 		depositPage.inputDescription("Deposit");
 
+		log.info("Deposit Money - Step 05: Click submit button");
 		depositPage.clickSubmitButton();
 		finalAmount += addedAmount;
 
 		depositTransactionID = depositPage.getTransactionID();
 
-		Assert.assertTrue(depositPage.isTransactionFormDisplayed(accountNumber));
-		Assert.assertTrue(depositPage.isAccountNumberCorrect(accountNumber));
-		Assert.assertTrue(depositPage.isAmountCreditedCorrect(addedAmount));
-		Assert.assertTrue(depositPage.isTypeOfTransactionCorrect("Deposit"));
-		Assert.assertTrue(depositPage.isDescriptionCorrect("Deposit"));
-		Assert.assertTrue(depositPage.isCurrentBalanceCorrect(finalAmount));
+		log.info("Deposit Money - Step 06: Check if the confirmed transaction form display");
+		verifyTrue(depositPage.isTransactionFormDisplayed(accountNumber));
+		
+		log.info("Deposit Money - Step 07: Check if the Account Number match");
+		verifyTrue(depositPage.isAccountNumberCorrect(accountNumber));
+		
+		log.info("Deposit Money - Step 08: Check if the Amount Credited correct");
+		verifyTrue(depositPage.isAmountCreditedCorrect(addedAmount));
+		
+		log.info("Deposit Money - Step 09: Check if the Type of Transaction correct");
+		verifyTrue(depositPage.isTypeOfTransactionCorrect("Deposit"));
+		
+		log.info("Deposit Money - Step 10: Check if the Description correct");
+		verifyTrue(depositPage.isDescriptionCorrect("Deposit"));
+		
+		log.info("Deposit Money - Step 11: Check if the Current Balance correct");
+		verifyTrue(depositPage.isCurrentBalanceCorrect(finalAmount));
 	}
 
 	@Test
 	public void TC_05_WithdrawMoney() {
+		log.info("Withdraw Money - Step 01: Open Withdrawal page");
 		withdrawalPage = (WithdrawalPageObjects) depositPage.openAnySubPage(driver, "Withdrawal");
 
-		Assert.assertTrue(withdrawalPage.isWithdrawalFormDisplayed());
+		log.info("Withdraw Money - Step 02: Check if the withdrawal form display");
+		verifyTrue(withdrawalPage.isWithdrawalFormDisplayed());
+		
+		log.info("Withdraw Money - Step 03: Input the Account Number");
 		withdrawalPage.inputAccountNo(accountNumber);
+		
+		log.info("Withdraw Money - Step 04: Input the Amount to withdraw");
 		withdrawalPage.inputAmount(substractAmount);
+		
+		log.info("Withdraw Money - Step 05: Input the Description");
 		withdrawalPage.inputDescription("Withdrawal");
 
+		log.info("Withdraw Money - Step 06: Click the submit button");
 		withdrawalPage.clickSubmitButton();
+		
 		finalAmount -= substractAmount;
 
 		withdrawalTransactionID = withdrawalPage.getTransactionID();
 
-		Assert.assertTrue(withdrawalPage.isTransactionFormDisplayed(accountNumber));
-		Assert.assertTrue(withdrawalPage.isAccountNumberCorrect(accountNumber));
-		Assert.assertTrue(withdrawalPage.isAmountDebitedCorrect(substractAmount));
-		Assert.assertTrue(withdrawalPage.isTypeOfTransactionCorrect("Withdrawal"));
-		Assert.assertTrue(withdrawalPage.isDescriptionCorrect("Withdrawal"));
-		Assert.assertTrue(withdrawalPage.isCurrentBalanceCorrect(finalAmount));
+		log.info("Withdraw Money - Step 07: Check if the Transaction confirmation form display");
+		verifyTrue(withdrawalPage.isTransactionFormDisplayed(accountNumber));
+		
+		log.info("Withdraw Money - Step 08: Check if the Account Number correct");
+		verifyTrue(withdrawalPage.isAccountNumberCorrect(accountNumber));
+		
+		log.info("Withdraw Money - Step 09: Check if the withdrawal amount correct");
+		verifyTrue(withdrawalPage.isAmountDebitedCorrect(substractAmount));
+		
+		log.info("Withdraw Money - Step 10: Check if the Type of Transaction correct");
+		verifyTrue(withdrawalPage.isTypeOfTransactionCorrect("Withdrawal"));
+		
+		log.info("Withdraw Money - Step 11: Check if the Description correct");
+		verifyTrue(withdrawalPage.isDescriptionCorrect("Withdrawal"));
+		
+		log.info("Withdraw Money - Step 12: Check if the Current Balance correct");
+		verifyTrue(withdrawalPage.isCurrentBalanceCorrect(finalAmount));
 	}
 
 	@Test
 	public void TC_06_TransferMoney() {
+		log.info("Transfer Money - Step 01: Open Fund Transfer page");
 		fundTransferPage = (FundTransferPageObjects) withdrawalPage.openAnySubPage(driver, "Fund Transfer");
 
-		Assert.assertTrue(fundTransferPage.isFundTransferFormDisplayed());
+		log.info("Transfer Money - Step 02: Check if the Fund Transfer form display");
+		verifyTrue(fundTransferPage.isFundTransferFormDisplayed());
 
+		log.info("Transfer Money - Step 03: Input payer's account");
 		fundTransferPage.inputPayersAccount(accountNumber);
+		
+		log.info("Transfer Money - Step 04: Input Payee's account");
 		fundTransferPage.inputPayeeAccount("60722");
+		
+		log.info("Transfer Money - Step 05: Input transfer amount");
 		fundTransferPage.inputAmount(transferAmount);
+		
+		log.info("Transfer Money - Step 06: Input Description");
 		fundTransferPage.inputDescription("Transfer");
+		
+		log.info("Transfer Money - Step 07: Click submit button");
 		fundTransferPage.clickToSubmitButton();
 		
 		finalAmount -= transferAmount;
 		
-		Assert.assertTrue(fundTransferPage.isPayerAccountCorrect(accountNumber));
-		Assert.assertTrue(fundTransferPage.isPayeeAccountCorrect("60722"));
-		Assert.assertTrue(fundTransferPage.isAmountCorrect(transferAmount));
-		Assert.assertTrue(fundTransferPage.isDescriptionCorrect("Transfer"));
+		log.info("Transfer Money - Step 08: Check if the balance in Payer Account correct");
+		verifyTrue(fundTransferPage.isPayerAccountCorrect(accountNumber));
+		
+		log.info("Transfer Money - Step 09: Check if the balance in Payee Account correct");
+		verifyTrue(fundTransferPage.isPayeeAccountCorrect("60722"));
+		
+		log.info("Transfer Money - Step 10: Check if the transfer amount correct");
+		verifyTrue(fundTransferPage.isAmountCorrect(transferAmount));
+		
+		log.info("Transfer Money - Step 11: Check if the description correct");
+		verifyTrue(fundTransferPage.isDescriptionCorrect("Transfer"));
 
 	}
 
 	@Test
 	public void TC_07_CheckCurrentAmount() {
+		log.info("Current Amount - Step 01: Open Balance Enquiry page");
 		balanceEnquiryPage = (BalanceEnquiryPageObjects) fundTransferPage.openAnySubPage(driver, "Balance Enquiry");
 
-		Assert.assertTrue(balanceEnquiryPage.isBalanceEnquiryFormDisplayed());
+		log.info("Current Amount - Step 02: Open Balance Enquiry page");
+		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormDisplayed());
 
 		balanceEnquiryPage.inputAccountNumber(accountNumber);
 		balanceEnquiryPage.clickToSubmitButton();
 		
-		Assert.assertTrue(balanceEnquiryPage.isBalanceEnquiryFormSuccessDisplayed(accountNumber));
-		Assert.assertTrue(balanceEnquiryPage.isAccountNumberCorrect(accountNumber));
-		Assert.assertTrue(balanceEnquiryPage.isAccountTypeCorrect(type));
-		Assert.assertTrue(balanceEnquiryPage.isAccountBalanceCorrect(finalAmount));
+		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormSuccessDisplayed(accountNumber));
+		verifyTrue(balanceEnquiryPage.isAccountNumberCorrect(accountNumber));
+		verifyTrue(balanceEnquiryPage.isAccountTypeCorrect(type));
+		verifyTrue(balanceEnquiryPage.isAccountBalanceCorrect(finalAmount));
 		
 	}
 	
@@ -233,32 +383,32 @@ public class TransactionFlow extends AbstractTest {
 	public void TC_08_DeleteAccount() {
 		deleteAccountPage = (DeleteAccountPageObjects) balanceEnquiryPage.openAnySubPage(driver, "Delete Account");
 		
-		Assert.assertTrue(deleteAccountPage.isDeleteAccountFormDisplayed());
+		verifyTrue(deleteAccountPage.isDeleteAccountFormDisplayed());
 		
 		deleteAccountPage.inputAccountNumber(accountNumber);
 		deleteAccountPage.clickToSubmitButton();
 		
 		deleteAccountPage.confirmDeleteAlert();
-		Assert.assertTrue(deleteAccountPage.isAccountDeletedSuccessfully());
+		verifyTrue(deleteAccountPage.isAccountDeletedSuccessfully());
 		
 		homePage = PageFactoryManager.getHomePage(driver);
-		Assert.assertTrue(homePage.isHomePageDisplayed());
+		verifyTrue(homePage.isHomePageDisplayed());
 	}
 	
 	@Test
 	public void TC_09_DeleteCustomer() {
 		deleteCustomerPage = (DeleteCustomerPageObjects) homePage.openAnySubPage(driver, "Delete Customer");
 	
-		Assert.assertTrue(deleteCustomerPage.isDeleteAccountFormDisplayed());
+		verifyTrue(deleteCustomerPage.isDeleteAccountFormDisplayed());
 		
 		deleteCustomerPage.inputCustomerID(customerID);
 		deleteCustomerPage.clickToSubmitButton();
 		
 		deleteCustomerPage.confirmDeleteAlert();
-		Assert.assertTrue(deleteCustomerPage.isCustomerDeletedSuccessfully());
+		verifyTrue(deleteCustomerPage.isCustomerDeletedSuccessfully());
 		
 		homePage = PageFactoryManager.getHomePage(driver);
-		Assert.assertTrue(homePage.isHomePageDisplayed());
+		verifyTrue(homePage.isHomePageDisplayed());
 	}
 
 	@AfterClass

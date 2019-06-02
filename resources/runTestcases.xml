@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="New Customer Form Validation" parallel="false">
-
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter" />
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
+		<listener class-name="com.bankguru.commons.ExtentReportListener" />
+		
+	</listeners>
 	<test name="Run test on Chrome browser">
 		<parameter name="browser" value="chrome" />
 		<packages>
@@ -25,6 +30,7 @@
 			<package name="com.bankguru.payment" />
 		</packages>
 	</test>
+	
 	<test name="Run test on Firefox browser">
 		<parameter name="browser" value="firefox" />
 		<packages>
@@ -33,8 +39,6 @@
 			<package name="com.bankguru.payment" />
 		</packages>
 	</test>
-	<!-- <test name="Run test on Firefox browser"> <parameter name="browser" 
-		value="firefox" /> <classes> <class name="com.bankguru.payment.TransactionFlow" 
-		/> </classes> </test> -->
+
 
 </suite> <!-- Suite -->
