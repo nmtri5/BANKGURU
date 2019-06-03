@@ -366,54 +366,78 @@ public class TransactionFlow extends AbstractTest {
 		log.info("Current Amount - Step 01: Open Balance Enquiry page");
 		balanceEnquiryPage = (BalanceEnquiryPageObjects) fundTransferPage.openAnySubPage(driver, "Balance Enquiry");
 
-		log.info("Current Amount - Step 02: Open Balance Enquiry page");
+		log.info("Current Amount - Step 02: Check if Balance Enquiry Forim display");
 		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormDisplayed());
 
+		log.info("Current Amount - Step 03: Input account number");
 		balanceEnquiryPage.inputAccountNumber(accountNumber);
+		
+		log.info("Current Amount - Step 04: Click to submit button");
 		balanceEnquiryPage.clickToSubmitButton();
 		
+		log.info("Current Amount - Step 05: Check if Balance Enquiry success form display");
 		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormSuccessDisplayed(accountNumber));
+		
+		log.info("Current Amount - Step 06: Check if Account Number match");
 		verifyTrue(balanceEnquiryPage.isAccountNumberCorrect(accountNumber));
+		
+		log.info("Current Amount - Step 04: Check if Account Type is correct");
 		verifyTrue(balanceEnquiryPage.isAccountTypeCorrect(type));
+		
+		log.info("Current Amount - Step 04: Check if Account Balance correct");
 		verifyTrue(balanceEnquiryPage.isAccountBalanceCorrect(finalAmount));
 		
 	}
 	
 	@Test
 	public void TC_08_DeleteAccount() {
+		log.info("Delete Account - Step 01: Open Delete Account page");
 		deleteAccountPage = (DeleteAccountPageObjects) balanceEnquiryPage.openAnySubPage(driver, "Delete Account");
 		
+		log.info("Delete Account - Step 02: Check if Delete Account form display");
 		verifyTrue(deleteAccountPage.isDeleteAccountFormDisplayed());
 		
+		log.info("Delete Account - Step 03: Input Account number");
 		deleteAccountPage.inputAccountNumber(accountNumber);
+		
+		log.info("Delete Account - Step 04: Click to Submit button");
 		deleteAccountPage.clickToSubmitButton();
 		
+		log.info("Delete Account - Step 05: Click confirm on alert to delete and verify message delete successfully");
 		deleteAccountPage.confirmDeleteAlert();
 		verifyTrue(deleteAccountPage.isAccountDeletedSuccessfully());
 		
+		log.info("Delete Account - Step 06: Check if homepage is display");
 		homePage = PageFactoryManager.getHomePage(driver);
 		verifyTrue(homePage.isHomePageDisplayed());
 	}
 	
 	@Test
 	public void TC_09_DeleteCustomer() {
+		log.info("Delete Customer - Step 01: Open Delete Customer page");
 		deleteCustomerPage = (DeleteCustomerPageObjects) homePage.openAnySubPage(driver, "Delete Customer");
 	
+		log.info("Delete Customer - Step 02: Check if Delete Customer form display");
 		verifyTrue(deleteCustomerPage.isDeleteAccountFormDisplayed());
 		
+		log.info("Delete Customer - Step 03: Input Customer ID");
 		deleteCustomerPage.inputCustomerID(customerID);
+		
+		log.info("Delete Customer - Step 04: Click to Submit button");
 		deleteCustomerPage.clickToSubmitButton();
 		
+		log.info("Delete Customer - Step 05: Click confirm on alert to delete and verify message delete successfully");
 		deleteCustomerPage.confirmDeleteAlert();
 		verifyTrue(deleteCustomerPage.isCustomerDeletedSuccessfully());
 		
+		log.info("Delete Customer - Step 06: Check if homepage is display");
 		homePage = PageFactoryManager.getHomePage(driver);
 		verifyTrue(homePage.isHomePageDisplayed());
-	}
+	}	
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterClass() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

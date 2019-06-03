@@ -436,9 +436,9 @@ public class NewCustomerFormValidation extends AbstractTest {
 		newCustomer.clearTextInTextbox("email");
 	}
 	
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void afterTest() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 
 }

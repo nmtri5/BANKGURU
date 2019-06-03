@@ -138,4 +138,39 @@ public class AbstractTest {
 	protected boolean verifyEquals(Object actual, Object expected) {
 		return checkEquals(actual, expected);
 	}
+	
+	protected void closeBrowserAndDriver(WebDriver driver) {
+		try {
+			String osName = System.getProperty("os.name").toLowerCase();
+			log.info("OS Name: " + osName);
+			
+			String cmd = "";
+			if (driver != null) {
+				driver.quit();
+			}
+			
+			if (driver.toString().toLowerCase().equals("chrome")) {
+				if(osName.toLowerCase().contains("mac")) {
+					cmd = "pkill chromedriver";
+				} else if (osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq chromedriver*\"";
+				}
+				
+				Process process = Runtime.getRuntime().exec(cmd);
+				process.waitFor();
+			}
+			
+			if (driver.toString().toLowerCase().contains("internetexplorer")) {
+				if(osName.toLowerCase().contains("windows")) {
+					cmd = "taskkill /F /FI \"IMAGENAME eq IEDriverServer*\"";
+					Process process = Runtime.getRuntime().exec(cmd);
+					process.waitFor();
+				}
+			}
+			log.info("-----QUIT BROWSER SUCCESSFULLY-----");
+		} catch (Exception e) {
+			log.info(e.getMessage());
+		}
+		
+	}
 }

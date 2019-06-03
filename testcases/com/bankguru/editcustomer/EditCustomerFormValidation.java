@@ -282,8 +282,8 @@ public class EditCustomerFormValidation extends AbstractTest {
 		System.out.println("Check");
 	}
 
-	@AfterClass
+	@AfterClass(alwaysRun = true)
 	public void tearDown() {
-		driver.quit();
+		closeBrowserAndDriver(driver);
 	}
 }
