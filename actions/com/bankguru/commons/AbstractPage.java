@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import bankguru.AbstractPageUI;
 import bankguru.EditCustomerPageUI;
+import bankguru.NewCustomerPageUI;
 
 public class AbstractPage {
 	JavascriptExecutor js;
@@ -26,9 +27,43 @@ public class AbstractPage {
 	By locator;
 	long shortTimeout = 5;
 	long longTimeout = 30;
-	
+
 	public void openAnyUrl(WebDriver driver, String url) {
 		driver.get(url);
+	}
+
+	public boolean isPageDisplayed(WebDriver driver, String pageName) {
+		return isElementDisplayed(driver, AbstractPageUI.DYNAMIC_PAGE_TITLE, pageName);
+	}
+
+	public boolean isDataMatched(WebDriver driver, String content, String locator, String... options) {
+		waitExplicit = new WebDriverWait(driver, 30);
+		String dynamicLocator = String.format(locator, (Object[]) options);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
+		WebElement element = driver.findElement(By.xpath(dynamicLocator));
+		String test = element.getText();
+		if (element.getText().length() > 0) {
+			if (element.getText().equals(content)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (element.getAttribute("value").equals(content)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
+	public void fillInTextBox(WebDriver driver, String textbox, String content) {
+		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textbox);
+		clearText(driver, AbstractPageUI.DYNAMIC_TEXTBOX, textbox);
+		if (driver.toString().contains("chrome") && textbox == "Date of Birth") {
+			removeAttributeInDOM(driver, "type", AbstractPageUI.DYNAMIC_TEXTBOX, textbox);
+		}
+		sendKeyToElement(driver, content, AbstractPageUI.DYNAMIC_TEXTBOX, textbox);
 	}
 
 	public String getCurrentPageUrl(WebDriver driver) {
@@ -81,8 +116,8 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		element.click();
 	}
-	
-	public void clickToElement(WebDriver driver,String locator, String ...options) {
+
+	public void clickToElement(WebDriver driver, String locator, String... options) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		String dynamicLocator = String.format(locator, (Object[]) options);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
@@ -93,7 +128,7 @@ public class AbstractPage {
 	public void clickToElement(WebDriver driver, WebElement element) {
 		element.click();
 	}
-	
+
 	public void sendKeyToElement(WebDriver driver, String locator, String content) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
@@ -101,7 +136,7 @@ public class AbstractPage {
 		element.sendKeys(content);
 	}
 
-	public void sendKeyToElement(WebDriver driver, String content, String locator, String...options) {
+	public void sendKeyToElement(WebDriver driver, String content, String locator, String... options) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		String dynamicLocator = String.format(locator, (Object[]) options);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
@@ -113,6 +148,14 @@ public class AbstractPage {
 		waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
 		WebElement element = driver.findElement(By.xpath(locator));
+		element.clear();
+	}
+	
+	public void clearText(WebDriver driver, String locator, String...options) {
+		waitExplicit = new WebDriverWait(driver, 30);
+		String dynamicLocator = String.format(locator, (Object[]) options);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
+		WebElement element = driver.findElement(By.xpath(dynamicLocator));
 		element.clear();
 	}
 
@@ -174,19 +217,27 @@ public class AbstractPage {
 		WebElement element = driver.findElement(By.xpath(locator));
 		return element.getText();
 	}
-	
-	public String getTextElement(WebDriver driver, String locator, String...options) {
+
+	public String getTextElement(WebDriver driver, String locator, String... options) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		String dynamicLocator = String.format(locator, (Object[]) options);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
 		WebElement element = driver.findElement(By.xpath(dynamicLocator));
 		return element.getText();
 	}
-	
+
 	public int countElementNumber(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
 		elements = driver.findElements(By.xpath(locator));
+		return elements.size();
+	}
+
+	public int countElementNumber(WebDriver driver, String locator, String... options) {
+		waitExplicit = new WebDriverWait(driver, 30);
+		String dynamicLocator = String.format(locator, (Object[]) options);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
+		elements = driver.findElements(By.xpath(dynamicLocator));
 		return elements.size();
 	}
 
@@ -207,7 +258,7 @@ public class AbstractPage {
 			element.click();
 		}
 	}
-	
+
 	public boolean isElementDisplayed(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
@@ -215,7 +266,7 @@ public class AbstractPage {
 		return element.isDisplayed();
 	}
 
-	public boolean isElementDisplayed(WebDriver driver, String locator, String...options) {
+	public boolean isElementDisplayed(WebDriver driver, String locator, String... options) {
 		waitExplicit = new WebDriverWait(driver, 10);
 		String dynamicLocator = String.format(locator, (Object[]) options);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
@@ -345,7 +396,7 @@ public class AbstractPage {
 	}
 
 	public void clickOnKeyBoard(WebDriver driver, Keys key) {
-		if (driver.toString().contains("firefox") || driver.toString().contains("internet explorer")){
+		if (driver.toString().contains("firefox") || driver.toString().contains("internet explorer")) {
 			sendKeyboardToElement(driver, EditCustomerPageUI.BARONE, key);
 		} else {
 			Keyboard keyboard = ((HasInputDevices) driver).getKeyboard();
@@ -356,7 +407,8 @@ public class AbstractPage {
 	public void highlightElement(WebDriver driver, String locator) {
 		WebElement element = driver.findElement(By.xpath(locator));
 		String originalStyle = element.getAttribute("style");
-		js.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element, "style", "border: 3px solid red; border-style: dashed;");
+		js.executeScript("arguments[0].setAttribute(arguments[1],arguments[2])", element, "style",
+				"border: 3px solid red; border-style: dashed;");
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
@@ -384,7 +436,16 @@ public class AbstractPage {
 		waitExplicit = new WebDriverWait(driver, 30);
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
 		WebElement element = driver.findElement(By.xpath(locator));
-		js = (JavascriptExecutor) driver;  
+		js = (JavascriptExecutor) driver;
+		return js.executeScript("arguments[0].removeAttribute('" + attribute + "');", element);
+	}
+
+	public Object removeAttributeInDOM(WebDriver driver, String attribute, String locator, String... options) {
+		waitExplicit = new WebDriverWait(driver, 30);
+		String dynamicLocator = String.format(locator, (Object[]) options);
+		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(dynamicLocator)));
+		WebElement element = driver.findElement(By.xpath(dynamicLocator));
+		js = (JavascriptExecutor) driver;
 		return js.executeScript("arguments[0].removeAttribute('" + attribute + "');", element);
 	}
 
@@ -415,7 +476,7 @@ public class AbstractPage {
 	public AbstractPage openAnySubPage(WebDriver driver, String pageName) {
 		waitForElementVisible(driver, AbstractPageUI.DYNAMIC_LINK_SIDE_MENU, pageName);
 		clickToElement(driver, AbstractPageUI.DYNAMIC_LINK_SIDE_MENU, pageName);
-		
+
 		switch (pageName) {
 		case "Homepage":
 			return PageFactoryManager.getHomePage(driver);
@@ -441,7 +502,7 @@ public class AbstractPage {
 			return PageFactoryManager.getHomePage(driver);
 		}
 	}
-	
+
 	public void waitForElementPresence(WebDriver driver, String locator) {
 		waitExplicit = new WebDriverWait(driver, 30);
 		this.locator = By.xpath(locator);
@@ -455,8 +516,8 @@ public class AbstractPage {
 		waitExplicit.until(ExpectedConditions.visibilityOfElementLocated(this.locator));
 
 	}
-	
-	public void waitForElementVisible(WebDriver driver, String locator, String ...options) {
+
+	public void waitForElementVisible(WebDriver driver, String locator, String... options) {
 		waitExplicit = new WebDriverWait(driver, 10);
 		locator = String.format(locator, (Object[]) options);
 		this.locator = By.xpath(locator);

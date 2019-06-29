@@ -1,12 +1,12 @@
 package com.bankguru.editcustomer;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.bankguru.account.Global_CreateNewAccount;
 import com.bankguru.commons.AbstractTest;
 import com.bankguru.commons.PageFactoryManager;
 import com.bankguru.pageobjects.EditCustomerPageObjects;
@@ -27,7 +27,7 @@ public class EditCustomerFormValidation extends AbstractTest {
 		loginPage = PageFactoryManager.getLoginPage(driver);
 
 		log.info("Pre-condition - Step 01: Login with a valid username");
-		homePage = loginWithValidUser(loginPage);
+		homePage = loginWithValidUser(loginPage, Global_CreateNewAccount.user, Global_CreateNewAccount.password);
 
 		log.info("Pre-condition - Step 02: Open Edit Customer page");
 		editCustomerPage = (EditCustomerPageObjects) homePage.openAnySubPage(driver, "Edit Customer");

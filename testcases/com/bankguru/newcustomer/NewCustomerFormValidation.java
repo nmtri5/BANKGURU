@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.bankguru.account.Global_CreateNewAccount;
 import com.bankguru.commons.AbstractTest;
 import com.bankguru.commons.PageFactoryManager;
 import com.bankguru.pageobjects.HomePageObjects;
@@ -27,7 +28,7 @@ public class NewCustomerFormValidation extends AbstractTest {
 		loginPage = PageFactoryManager.getLoginPage(driver);
 		
 		log.info("Pre-condition - Step 01: Login with a valid username");
-		homePage = loginWithValidUser(loginPage);
+		homePage = loginWithValidUser(loginPage, Global_CreateNewAccount.user, Global_CreateNewAccount.password);
 		
 		log.info("Pre-condition - Step 02: Open New Customer page");
 		newCustomer = (NewCustomerPageObject) homePage.openAnySubPage(driver, "New Customer");

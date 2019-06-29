@@ -1,14 +1,17 @@
 package com.bankguru.payment;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.bankguru.account.Global_CreateNewAccount;
 import com.bankguru.commons.AbstractTest;
 import com.bankguru.commons.PageFactoryManager;
 import com.bankguru.pageobjects.BalanceEnquiryPageObjects;
@@ -23,6 +26,8 @@ import com.bankguru.pageobjects.NewAccountPageObjects;
 import com.bankguru.pageobjects.NewCustomerPageObject;
 import com.bankguru.pageobjects.WithdrawalPageObjects;
 
+import bankguru.AbstractPageUI;
+
 public class TransactionFlow extends AbstractTest {
 	WebDriver driver;
 	private HomePageObjects homePage;
@@ -36,7 +41,8 @@ public class TransactionFlow extends AbstractTest {
 	private BalanceEnquiryPageObjects balanceEnquiryPage;
 	private DeleteAccountPageObjects deleteAccountPage;
 	private DeleteCustomerPageObjects deleteCustomerPage;
-	String customerID, type = "Current", accountNumber, depositTransactionID, withdrawalTransactionID;
+	
+	String customerID, accountType = "Current", accountNumber, depositTransactionID, withdrawalTransactionID;
 	int initialAmount = 50000, addedAmount = 20000, substractAmount = 5000, transferAmount = 15000, finalAmount;
 
 	// data for new customer
@@ -62,85 +68,51 @@ public class TransactionFlow extends AbstractTest {
 	@Parameters("browser")
 	@BeforeClass
 	public void beforeClass(String browser) {
+		log.info("Pre-condtition: Create New Customer - Step 01: Open Browser");
 		driver = openBrowser(browser);
 
+		log.info("Pre-condtition: Create New Customer - Step 02: Logging in using valid User ID");
 		loginPage = PageFactoryManager.getLoginPage(driver);
-		homePage = loginWithValidUser(loginPage);
+		System.out.println(Global_CreateNewAccount.user);
+		System.out.println(Global_CreateNewAccount.password);
+		homePage = loginWithValidUser(loginPage, Global_CreateNewAccount.user, Global_CreateNewAccount.password);
 
+		log.info("Pre-condtition: Create New Customer - Step 03: Open New Customer page");
 		newCustomer = (NewCustomerPageObject) homePage.openAnySubPage(driver, "New Customer");
-	}
-
-	private int randomeNumber() {
-		Random ran = new Random();
-		return ran.nextInt(999999);
 	}
 
 	@Test
 	public void TC_01_CreateNewCustomer() {
-		log.info("Create New Customer - Step 01: Fill in Customer Name");
-		newCustomer.fillCustomerName(customerName);
+		log.info("Create New Customer - Step 01: Verify if Add New Customer form displayed");
+		verifyTrue(newCustomer.isPageDisplayed(driver, "Add New Customer"));
 		
-		log.info("Create New Customer - Step 02: Fill in Gender radio box");
+		log.info("Create New Customer - Step 02: Fill in all information");
+		newCustomer.fillInTextBox(driver, "Customer Name", customerName);
 		newCustomer.checkToGenderRadioBox(gender);
+		newCustomer.fillInTextBox(driver, "Date of Birth", dob);
+		newCustomer.fillInTextBox(driver, "Address", address);
+		newCustomer.fillInTextBox(driver, "City", city);
+		newCustomer.fillInTextBox(driver, "State", state);
+		newCustomer.fillInTextBox(driver, "PIN", pin);
+		newCustomer.fillInTextBox(driver, "Mobile Number", mobile);
+		newCustomer.fillInTextBox(driver, "E-mail", email);
+		newCustomer.fillInTextBox(driver, "Password",password);
 		
-		log.info("Create New Customer - Step 03: Fill in Date of Birth");
-		newCustomer.fillDOB(dob);
-		
-		log.info("Create New Customer - Step 04: Fill in Address");
-		newCustomer.fillAddress(address);
-		
-		log.info("Create New Customer - Step 05: Fill in City");
-		newCustomer.fillCity(city);
-		
-		log.info("Create New Customer - Step 06: Fill in State");
-		newCustomer.fillState(state);
-		
-		log.info("Create New Customer - Step 07: Fill in Pin");
-		newCustomer.fillPIN(pin);
-		
-		log.info("Create New Customer - Step 08: Fill in Mobile");
-		newCustomer.fillMobileNumber(mobile);
-		
-		log.info("Create New Customer - Step 09: Fill in Email");
-		newCustomer.fillEmail(email);
-		
-		log.info("Create New Customer - Step 10: Fill in Password");
-		newCustomer.fillPassword(password);
-
-		log.info("Create New Customer - Step 11: Click the submit button");
+		log.info("Create New Customer - Step 03: Click the submit button");
 		newCustomer.clickSubmitButton();
-
 		customerID = newCustomer.getCustomerID();
 
-		log.info("Create New Customer - Step 12: Check if the customer information form display");
-		verifyTrue(newCustomer.isNewCustomerFormInformationDisplayed());
-		
-		log.info("Create New Customer - Step 13: Check if the customer name match");
-		verifyTrue(newCustomer.isUsernameMatch(customerName));
-		
-		log.info("Create New Customer - Step 14: Check if the gender match");
-		verifyTrue(newCustomer.isGenderMatch(gender));
-		
-		log.info("Create New Customer - Step 15: Check if the date of birth match");
-		verifyTrue(newCustomer.isDOBMatch(dob));
-		
-		log.info("Create New Customer - Step 16: Check if the address match");
-		verifyTrue(newCustomer.isAddressMatch(address));
-		
-		log.info("Create New Customer - Step 17: Check if the city match");
-		verifyTrue(newCustomer.isCityMatch(city));
-		
-		log.info("Create New Customer - Step 18: Check if the state match");
-		verifyTrue(newCustomer.isStateMatch(state));
-		
-		log.info("Create New Customer - Step 19: Check if the pin match");
-		verifyTrue(newCustomer.isPinMatch(pin));
-		
-		log.info("Create New Customer - Step 20: Check if the mobile number match");
-		verifyTrue(newCustomer.isMobileNumberMatch(mobile));
-		
-		log.info("Create New Customer - Step 21: Check if the email match");
-		verifyTrue(newCustomer.isEmailMatch(email));
+		log.info("Create New Customer - Step 04: Check if the data is matched");
+		verifyTrue(newCustomer.isPageDisplayed(driver, "Customer Registered Successfully!!!"));
+		verifyTrue(newCustomer.isDataMatched(driver, customerName, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer Name"));
+		verifyTrue(newCustomer.isDataMatched(driver, gender, AbstractPageUI.DYNAMIC_DATA_VALUE, "Gender"));
+		verifyTrue(newCustomer.isDataMatched(driver, dob, AbstractPageUI.DYNAMIC_DATA_VALUE, "Birthdate"));
+		verifyTrue(newCustomer.isDataMatched(driver, address, AbstractPageUI.DYNAMIC_DATA_VALUE, "Address"));
+		verifyTrue(newCustomer.isDataMatched(driver, city, AbstractPageUI.DYNAMIC_DATA_VALUE, "City"));
+		verifyTrue(newCustomer.isDataMatched(driver, state, AbstractPageUI.DYNAMIC_DATA_VALUE, "State"));
+		verifyTrue(newCustomer.isDataMatched(driver, pin, AbstractPageUI.DYNAMIC_DATA_VALUE, "Pin"));
+		verifyTrue(newCustomer.isDataMatched(driver, mobile, AbstractPageUI.DYNAMIC_DATA_VALUE, "Mobile No."));
+		verifyTrue(newCustomer.isDataMatched(driver, email, AbstractPageUI.DYNAMIC_DATA_VALUE, "Email"));
 	}
 
 	@Test
@@ -149,52 +121,46 @@ public class TransactionFlow extends AbstractTest {
 		editCustomer = (EditCustomerPageObjects) newCustomer.openAnySubPage(driver, "Edit Customer");
 		
 		log.info("Edit Customer - Step 02: Fill in Customer ID");
-		editCustomer.fillCustomerID(customerID);
+		editCustomer.fillInTextBox(driver, "Customer ID", customerID);
 		
 		log.info("Edit Customer - Step 03: Click Submit button");
 		editCustomer.clickSubmitButton();
+		
+		log.info("Edit Customer - Step 04: Verify if data displayed correctly");
+		verifyTrue(newCustomer.isDataMatched(driver, customerName, AbstractPageUI.DYNAMIC_TEXTBOX, "Customer Name"));
+		verifyTrue(newCustomer.isDataMatched(driver, gender, AbstractPageUI.DYNAMIC_TEXTBOX, "Gender"));
+		verifyTrue(newCustomer.isDataMatched(driver, dob, AbstractPageUI.DYNAMIC_TEXTBOX, "Date of Birth"));
+		verifyTrue(newCustomer.isDataMatched(driver, address, AbstractPageUI.DYNAMIC_TEXTBOX, "Address"));
+		verifyTrue(newCustomer.isDataMatched(driver, city, AbstractPageUI.DYNAMIC_TEXTBOX, "City"));
+		verifyTrue(newCustomer.isDataMatched(driver, state, AbstractPageUI.DYNAMIC_TEXTBOX, "State"));
+		verifyTrue(newCustomer.isDataMatched(driver, pin, AbstractPageUI.DYNAMIC_TEXTBOX, "PIN"));
+		verifyTrue(newCustomer.isDataMatched(driver, mobile, AbstractPageUI.DYNAMIC_TEXTBOX, "Mobile Number"));
+		verifyTrue(newCustomer.isDataMatched(driver, email, AbstractPageUI.DYNAMIC_TEXTBOX, "E-mail"));
+		
+		log.info("Edit Customer - Step 05: Edit all data");
+		editCustomer.fillInTextBox(driver, "Address", editAddress);
+		editCustomer.fillInTextBox(driver, "City", editCity);
+		editCustomer.fillInTextBox(driver, "State", editState);
+		editCustomer.fillInTextBox(driver, "PIN", editPin);
+		editCustomer.fillInTextBox(driver, "Mobile Number", editMobile);
+		editCustomer.fillInTextBox(driver, "E-mail", editEmail);
 
-		log.info("Edit Customer - Step 04: Edit Address");
-		editCustomer.editAddress(editAddress);
-		
-		log.info("Edit Customer - Step 05: Edit City");
-		editCustomer.editCity(editCity);
-		
-		log.info("Edit Customer - Step 06: Edit State");
-		editCustomer.editState(editState);
-		
-		log.info("Edit Customer - Step 07: Edit Pin");
-		editCustomer.editPIN(editPin);
-		
-		log.info("Edit Customer - Step 08: Edit Mobile");
-		editCustomer.editMobileNumber(editMobile);
-		
-		log.info("Edit Customer - Step 09: Edit Email");
-		editCustomer.editEmail(editEmail);
-
-		log.info("Edit Customer - Step 10: Click Submit button");
+		log.info("Edit Customer - Step 06: Click Submit button");
 		editCustomer.clickConfirmButton();
 
-		log.info("Edit Customer - Step 11: Check if success form display");
-		verifyTrue(editCustomer.isEditCustomerSuccessfully());
+		log.info("Edit Customer - Step 07: Check if success form display");
+		verifyTrue(editCustomer.isPageDisplayed(driver, "Customer details updated Successfully!!!"));
 		
-		log.info("Edit Customer - Step 12: Check if the address match");
-		verifyTrue(editCustomer.isAddressMatch(editAddress));
-		
-		log.info("Edit Customer - Step 13: Check if the city match");
-		verifyTrue(editCustomer.isCityMatch(editCity));
-		
-		log.info("Edit Customer - Step 14: Check if the state match");
-		verifyTrue(editCustomer.isStateMatch(editState));
-		
-		log.info("Edit Customer - Step 15: Check if the pin match");
-		verifyTrue(editCustomer.isPinMatch(editPin));
-		
-		log.info("Edit Customer - Step 16: Check if the mobile number match");
-		verifyTrue(editCustomer.isMobileNumberMatch(editMobile));
-		
-		log.info("Edit Customer - Step 17: Check if the email match");
-		verifyTrue(editCustomer.isEmailMatch(editEmail));
+		log.info("Edit Customer - Step 08: Check if the data is updated");
+		verifyTrue(editCustomer.isDataMatched(driver, customerName, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer Name"));
+		verifyTrue(editCustomer.isDataMatched(driver, gender, AbstractPageUI.DYNAMIC_DATA_VALUE, "Gender"));
+		verifyTrue(editCustomer.isDataMatched(driver, dob, AbstractPageUI.DYNAMIC_DATA_VALUE, "Birthdate"));
+		verifyTrue(editCustomer.isDataMatched(driver, editAddress, AbstractPageUI.DYNAMIC_DATA_VALUE, "Address"));
+		verifyTrue(editCustomer.isDataMatched(driver, editCity, AbstractPageUI.DYNAMIC_DATA_VALUE, "City"));
+		verifyTrue(editCustomer.isDataMatched(driver, editState, AbstractPageUI.DYNAMIC_DATA_VALUE, "State"));
+		verifyTrue(editCustomer.isDataMatched(driver, editPin, AbstractPageUI.DYNAMIC_DATA_VALUE, "Pin"));
+		verifyTrue(editCustomer.isDataMatched(driver, editMobile, AbstractPageUI.DYNAMIC_DATA_VALUE, "Mobile No."));
+		verifyTrue(editCustomer.isDataMatched(driver, editEmail, AbstractPageUI.DYNAMIC_DATA_VALUE, "Email"));
 	}
 
 	@Test
@@ -203,41 +169,28 @@ public class TransactionFlow extends AbstractTest {
 		newAccount = (NewAccountPageObjects) editCustomer.openAnySubPage(driver, "New Account");
 
 		log.info("Create New Account - Step 02: Input Customer ID");
-		newAccount.inputCustomerID(customerID);
+		newAccount.fillInTextBox(driver, "Customer id", customerID);
 		
 		log.info("Create New Account - Step 03: Select Account Type");
-		newAccount.selectAccountType(type);
+		newAccount.selectAccountType(accountType);
 		
 		log.info("Create New Account - Step 04: Input Initial deposit");
-		newAccount.inputInitialDeposit(initialAmount);
-		
+		newAccount.fillInTextBox(driver, "Initial deposit", String.valueOf(initialAmount));
 		finalAmount = initialAmount;
 
 		log.info("Create New Account - Step 05: Click submit button");
 		newAccount.clickSubmitButton();
-
 		accountNumber = newAccount.getAccountNumber();
 		
 		log.info("Create New Account - Step 06: Check if account creation success form display");
-		verifyTrue(newAccount.isAccountCreatedSuccess());
-		
-		log.info("Create New Account - Step 07: Check if Customer ID match");
-		verifyTrue(newAccount.isCustomerIDMatch(customerID));
-		
-		log.info("Create New Account - Step 08: Check if Customer Name match");
-		verifyTrue(newAccount.isCustomerNameMatch(customerName));
-		
-		log.info("Create New Account - Step 09: Check if Email match");
-		verifyTrue(newAccount.isEmailMatch(editEmail));
-		
-		log.info("Create New Account - Step 10: Check if Account Type match");
-		verifyTrue(newAccount.isAccountTypeMatch(type));
-		
-		log.info("Create New Account - Step 11: Check if Opening date match");
-		verifyTrue(newAccount.isOpeningDateCorrect());
-		
-		log.info("Create New Account - Step 12: Check if Current Amount match");
-		verifyTrue(newAccount.isCurrentAmountMatch(initialAmount));
+		verifyTrue(newAccount.isPageDisplayed(driver, "Account Generated Successfully!!!"));
+		log.info("Create New Account - Step 07: Check if new account data generated correctly");
+		verifyTrue(newAccount.isDataMatched(driver, customerID, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer ID"));
+		verifyTrue(newAccount.isDataMatched(driver, customerName, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer Name"));
+		verifyTrue(newAccount.isDataMatched(driver, editEmail, AbstractPageUI.DYNAMIC_DATA_VALUE, "Email"));
+		verifyTrue(newAccount.isDataMatched(driver, accountType, AbstractPageUI.DYNAMIC_DATA_VALUE, "Account Type"));
+		verifyTrue(newAccount.isDataMatched(driver, getTodayDate(), AbstractPageUI.DYNAMIC_DATA_VALUE, "Date of Opening"));
+		verifyTrue(newAccount.isDataMatched(driver, String.valueOf(initialAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Current Amount"));
 	}
 
 	@Test
@@ -246,37 +199,28 @@ public class TransactionFlow extends AbstractTest {
 		depositPage = (DepositPageObjects) newAccount.openAnySubPage(driver, "Deposit");
 
 		log.info("Deposit Money - Step 02: Input Account Number");
-		depositPage.inputAccountNo(accountNumber);
+		depositPage.fillInTextBox(driver, "Account No", accountNumber);
 		
 		log.info("Deposit Money - Step 03: Input Amount to Deposit");
-		depositPage.inputAmount(addedAmount);
+		depositPage.fillInTextBox(driver, "Amount", String.valueOf(addedAmount));
 		
 		log.info("Deposit Money - Step 04: Input Description");
-		depositPage.inputDescription("Deposit");
+		depositPage.fillInTextBox(driver, "Description", "Deposit");
 
 		log.info("Deposit Money - Step 05: Click submit button");
 		depositPage.clickSubmitButton();
 		finalAmount += addedAmount;
-
 		depositTransactionID = depositPage.getTransactionID();
 
 		log.info("Deposit Money - Step 06: Check if the confirmed transaction form display");
 		verifyTrue(depositPage.isTransactionFormDisplayed(accountNumber));
 		
-		log.info("Deposit Money - Step 07: Check if the Account Number match");
-		verifyTrue(depositPage.isAccountNumberCorrect(accountNumber));
-		
-		log.info("Deposit Money - Step 08: Check if the Amount Credited correct");
-		verifyTrue(depositPage.isAmountCreditedCorrect(addedAmount));
-		
-		log.info("Deposit Money - Step 09: Check if the Type of Transaction correct");
-		verifyTrue(depositPage.isTypeOfTransactionCorrect("Deposit"));
-		
-		log.info("Deposit Money - Step 10: Check if the Description correct");
-		verifyTrue(depositPage.isDescriptionCorrect("Deposit"));
-		
-		log.info("Deposit Money - Step 11: Check if the Current Balance correct");
-		verifyTrue(depositPage.isCurrentBalanceCorrect(finalAmount));
+		log.info("Deposit Money - Step 07: Check if the data matched correctly");
+		verifyTrue(depositPage.isDataMatched(driver, accountNumber, AbstractPageUI.DYNAMIC_DATA_VALUE, "Account No"));
+		verifyTrue(depositPage.isDataMatched(driver, String.valueOf(addedAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Amount Credited"));
+		verifyTrue(depositPage.isDataMatched(driver, "Deposit", AbstractPageUI.DYNAMIC_DATA_VALUE, "Type of Transaction"));
+		verifyTrue(depositPage.isDataMatched(driver, "Deposit", AbstractPageUI.DYNAMIC_DATA_VALUE, "Description"));
+		verifyTrue(depositPage.isDataMatched(driver, String.valueOf(finalAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Current Balance"));
 	}
 
 	@Test
@@ -285,41 +229,31 @@ public class TransactionFlow extends AbstractTest {
 		withdrawalPage = (WithdrawalPageObjects) depositPage.openAnySubPage(driver, "Withdrawal");
 
 		log.info("Withdraw Money - Step 02: Check if the withdrawal form display");
-		verifyTrue(withdrawalPage.isWithdrawalFormDisplayed());
+		verifyTrue(withdrawalPage.isPageDisplayed(driver, "Amount Withdrawal Form"));
 		
 		log.info("Withdraw Money - Step 03: Input the Account Number");
-		withdrawalPage.inputAccountNo(accountNumber);
+		withdrawalPage.fillInTextBox(driver, "Account No", accountNumber);
 		
 		log.info("Withdraw Money - Step 04: Input the Amount to withdraw");
-		withdrawalPage.inputAmount(substractAmount);
+		withdrawalPage.fillInTextBox(driver, "Amount", String.valueOf(substractAmount));
 		
 		log.info("Withdraw Money - Step 05: Input the Description");
-		withdrawalPage.inputDescription("Withdrawal");
+		withdrawalPage.fillInTextBox(driver, "Description", "Withdrawal");
 
 		log.info("Withdraw Money - Step 06: Click the submit button");
 		withdrawalPage.clickSubmitButton();
-		
 		finalAmount -= substractAmount;
-
 		withdrawalTransactionID = withdrawalPage.getTransactionID();
 
 		log.info("Withdraw Money - Step 07: Check if the Transaction confirmation form display");
 		verifyTrue(withdrawalPage.isTransactionFormDisplayed(accountNumber));
 		
-		log.info("Withdraw Money - Step 08: Check if the Account Number correct");
-		verifyTrue(withdrawalPage.isAccountNumberCorrect(accountNumber));
-		
-		log.info("Withdraw Money - Step 09: Check if the withdrawal amount correct");
-		verifyTrue(withdrawalPage.isAmountDebitedCorrect(substractAmount));
-		
-		log.info("Withdraw Money - Step 10: Check if the Type of Transaction correct");
-		verifyTrue(withdrawalPage.isTypeOfTransactionCorrect("Withdrawal"));
-		
-		log.info("Withdraw Money - Step 11: Check if the Description correct");
-		verifyTrue(withdrawalPage.isDescriptionCorrect("Withdrawal"));
-		
-		log.info("Withdraw Money - Step 12: Check if the Current Balance correct");
-		verifyTrue(withdrawalPage.isCurrentBalanceCorrect(finalAmount));
+		log.info("Withdraw Money - Step 08: Check if the data matched correctly");
+		verifyTrue(withdrawalPage.isDataMatched(driver, accountNumber, AbstractPageUI.DYNAMIC_DATA_VALUE, "Account No"));
+		verifyTrue(withdrawalPage.isDataMatched(driver, String.valueOf(substractAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Amount Debited"));
+		verifyTrue(withdrawalPage.isDataMatched(driver, "Withdrawal", AbstractPageUI.DYNAMIC_DATA_VALUE, "Type of Transaction"));
+		verifyTrue(withdrawalPage.isDataMatched(driver, "Withdrawal", AbstractPageUI.DYNAMIC_DATA_VALUE, "Description"));
+		verifyTrue(withdrawalPage.isDataMatched(driver, String.valueOf(finalAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Current Balance"));
 	}
 
 	@Test
@@ -328,37 +262,32 @@ public class TransactionFlow extends AbstractTest {
 		fundTransferPage = (FundTransferPageObjects) withdrawalPage.openAnySubPage(driver, "Fund Transfer");
 
 		log.info("Transfer Money - Step 02: Check if the Fund Transfer form display");
-		verifyTrue(fundTransferPage.isFundTransferFormDisplayed());
+		verifyTrue(fundTransferPage.isPageDisplayed(driver, "Fund transfer"));
 
 		log.info("Transfer Money - Step 03: Input payer's account");
-		fundTransferPage.inputPayersAccount(accountNumber);
+		fundTransferPage.fillInTextBox(driver, "Payers account no", accountNumber);
 		
 		log.info("Transfer Money - Step 04: Input Payee's account");
-		fundTransferPage.inputPayeeAccount("60722");
+		fundTransferPage.fillInTextBox(driver, "Payees account no", String.valueOf(Integer.valueOf(accountNumber)-1));
 		
 		log.info("Transfer Money - Step 05: Input transfer amount");
-		fundTransferPage.inputAmount(transferAmount);
+		fundTransferPage.fillInTextBox(driver, "Amount", String.valueOf(transferAmount));
 		
 		log.info("Transfer Money - Step 06: Input Description");
-		fundTransferPage.inputDescription("Transfer");
+		fundTransferPage.fillInTextBox(driver, "Description", "Transfer");
 		
 		log.info("Transfer Money - Step 07: Click submit button");
 		fundTransferPage.clickToSubmitButton();
-		
 		finalAmount -= transferAmount;
 		
-		log.info("Transfer Money - Step 08: Check if the balance in Payer Account correct");
-		verifyTrue(fundTransferPage.isPayerAccountCorrect(accountNumber));
+		log.info("Transfer Money - Step 08: Check if the Fund Transfer detail page displayed correctly");
+		verifyTrue(fundTransferPage.isPageDisplayed(driver, "Fund Transfer Details"));
 		
-		log.info("Transfer Money - Step 09: Check if the balance in Payee Account correct");
-		verifyTrue(fundTransferPage.isPayeeAccountCorrect("60722"));
-		
-		log.info("Transfer Money - Step 10: Check if the transfer amount correct");
-		verifyTrue(fundTransferPage.isAmountCorrect(transferAmount));
-		
-		log.info("Transfer Money - Step 11: Check if the description correct");
-		verifyTrue(fundTransferPage.isDescriptionCorrect("Transfer"));
-
+		log.info("Transfer Money - Step 09: Check if the data matched correctly");
+		verifyTrue(fundTransferPage.isDataMatched(driver, accountNumber, AbstractPageUI.DYNAMIC_DATA_VALUE, "From Account Number"));
+		verifyTrue(fundTransferPage.isDataMatched(driver, String.valueOf(Integer.valueOf(accountNumber)-1), AbstractPageUI.DYNAMIC_DATA_VALUE, "To Account Number"));
+		verifyTrue(fundTransferPage.isDataMatched(driver, String.valueOf(transferAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Amount"));
+		verifyTrue(fundTransferPage.isDataMatched(driver, "Transfer", AbstractPageUI.DYNAMIC_DATA_VALUE, "Description"));
 	}
 
 	@Test
@@ -367,10 +296,10 @@ public class TransactionFlow extends AbstractTest {
 		balanceEnquiryPage = (BalanceEnquiryPageObjects) fundTransferPage.openAnySubPage(driver, "Balance Enquiry");
 
 		log.info("Current Amount - Step 02: Check if Balance Enquiry Forim display");
-		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormDisplayed());
+		verifyTrue(balanceEnquiryPage.isPageDisplayed(driver, "Balance Enquiry Form"));
 
 		log.info("Current Amount - Step 03: Input account number");
-		balanceEnquiryPage.inputAccountNumber(accountNumber);
+		balanceEnquiryPage.fillInTextBox(driver, "Account No", accountNumber);
 		
 		log.info("Current Amount - Step 04: Click to submit button");
 		balanceEnquiryPage.clickToSubmitButton();
@@ -378,14 +307,10 @@ public class TransactionFlow extends AbstractTest {
 		log.info("Current Amount - Step 05: Check if Balance Enquiry success form display");
 		verifyTrue(balanceEnquiryPage.isBalanceEnquiryFormSuccessDisplayed(accountNumber));
 		
-		log.info("Current Amount - Step 06: Check if Account Number match");
-		verifyTrue(balanceEnquiryPage.isAccountNumberCorrect(accountNumber));
-		
-		log.info("Current Amount - Step 04: Check if Account Type is correct");
-		verifyTrue(balanceEnquiryPage.isAccountTypeCorrect(type));
-		
-		log.info("Current Amount - Step 04: Check if Account Balance correct");
-		verifyTrue(balanceEnquiryPage.isAccountBalanceCorrect(finalAmount));
+		log.info("Current Amount - Step 06: Check if the data matched correctly");
+		verifyTrue(balanceEnquiryPage.isDataMatched(driver, accountNumber, AbstractPageUI.DYNAMIC_DATA_VALUE, "Account No"));
+		verifyTrue(balanceEnquiryPage.isDataMatched(driver, accountType, AbstractPageUI.DYNAMIC_DATA_VALUE, "Type of Account"));
+		verifyTrue(balanceEnquiryPage.isDataMatched(driver, String.valueOf(finalAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Balance"));
 		
 	}
 	
@@ -395,16 +320,16 @@ public class TransactionFlow extends AbstractTest {
 		deleteAccountPage = (DeleteAccountPageObjects) balanceEnquiryPage.openAnySubPage(driver, "Delete Account");
 		
 		log.info("Delete Account - Step 02: Check if Delete Account form display");
-		verifyTrue(deleteAccountPage.isDeleteAccountFormDisplayed());
+		verifyTrue(deleteAccountPage.isPageDisplayed(driver, "Delete Account Form"));
 		
 		log.info("Delete Account - Step 03: Input Account number");
-		deleteAccountPage.inputAccountNumber(accountNumber);
+		deleteAccountPage.fillInTextBox(driver, "Account No", accountNumber);
 		
 		log.info("Delete Account - Step 04: Click to Submit button");
 		deleteAccountPage.clickToSubmitButton();
 		
 		log.info("Delete Account - Step 05: Click confirm on alert to delete and verify message delete successfully");
-		deleteAccountPage.confirmDeleteAlert();
+		deleteAccountPage.acceptAlert(driver);
 		verifyTrue(deleteAccountPage.isAccountDeletedSuccessfully());
 		
 		log.info("Delete Account - Step 06: Check if homepage is display");
@@ -418,16 +343,16 @@ public class TransactionFlow extends AbstractTest {
 		deleteCustomerPage = (DeleteCustomerPageObjects) homePage.openAnySubPage(driver, "Delete Customer");
 	
 		log.info("Delete Customer - Step 02: Check if Delete Customer form display");
-		verifyTrue(deleteCustomerPage.isDeleteAccountFormDisplayed());
+		verifyTrue(deleteCustomerPage.isPageDisplayed(driver, "Delete Customer Form"));
 		
 		log.info("Delete Customer - Step 03: Input Customer ID");
-		deleteCustomerPage.inputCustomerID(customerID);
+		deleteCustomerPage.fillInTextBox(driver, "Customer ID", customerID);
 		
 		log.info("Delete Customer - Step 04: Click to Submit button");
 		deleteCustomerPage.clickToSubmitButton();
 		
 		log.info("Delete Customer - Step 05: Click confirm on alert to delete and verify message delete successfully");
-		deleteCustomerPage.confirmDeleteAlert();
+		deleteCustomerPage.acceptAlert(driver);
 		verifyTrue(deleteCustomerPage.isCustomerDeletedSuccessfully());
 		
 		log.info("Delete Customer - Step 06: Check if homepage is display");
@@ -440,4 +365,14 @@ public class TransactionFlow extends AbstractTest {
 		closeBrowserAndDriver(driver);
 	}
 
+	private int randomeNumber() {
+		Random ran = new Random();
+		return ran.nextInt(999999);
+	}
+
+	public String getTodayDate() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		return dateFormat.format(date);
+	}
 }

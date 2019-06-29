@@ -9,6 +9,7 @@ import com.bankguru.commons.AbstractPage;
 import com.bankguru.commons.PageFactoryManager;
 
 import bankguru.LoginPageUI;
+import bankguru.RegisterPageUI;
 
 public class LoginPageObjects extends AbstractPage{
 	private WebDriver driver;
@@ -39,4 +40,9 @@ public class LoginPageObjects extends AbstractPage{
 		clickToElement(driver, LoginPageUI.HERE_LINK);
 		return PageFactoryManager.getRegisterPage(driver);
 	}
+
+	public boolean isLoginFormDisplayed() {
+		return isElementDisplayed(driver, LoginPageUI.LOGIN_FORM);
+	}
+
 }

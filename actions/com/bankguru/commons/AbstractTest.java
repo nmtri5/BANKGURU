@@ -55,16 +55,16 @@ public class AbstractTest {
 		return driver;
 	}
 
-	protected HomePageObjects loginWithValidUser(LoginPageObjects login) {
-		login.inputUserName("mngr197266");
-		login.inputPassword("EmEvEdY");
+	protected HomePageObjects loginWithValidUser(LoginPageObjects login, String userName, String password) {
+		login.inputUserName(userName);
+		login.inputPassword(password);
 
 		login.clickLoginButton();
 		homePage = PageFactoryManager.getHomePage(driver);
 
 		return homePage;
 	}
-
+	
 	private boolean checkPassed(boolean condition) {
 		boolean pass = true;
 		try {
