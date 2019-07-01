@@ -42,7 +42,7 @@ public class TransactionFlow extends AbstractTest {
 	private DeleteAccountPageObjects deleteAccountPage;
 	private DeleteCustomerPageObjects deleteCustomerPage;
 	
-	String customerID, accountType = "Current", accountNumber, depositTransactionID, withdrawalTransactionID;
+	String customerID, accountType = "Current", accountNumber, depositTransactionID, withdrawalTransactionID, payeeAccount;
 	int initialAmount = 50000, addedAmount = 20000, substractAmount = 5000, transferAmount = 15000, finalAmount;
 
 	// data for new customer
@@ -184,6 +184,7 @@ public class TransactionFlow extends AbstractTest {
 		
 		log.info("Create New Account - Step 06: Check if account creation success form display");
 		verifyTrue(newAccount.isPageDisplayed(driver, "Account Generated Successfully!!!"));
+		
 		log.info("Create New Account - Step 07: Check if new account data generated correctly");
 		verifyTrue(newAccount.isDataMatched(driver, customerID, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer ID"));
 		verifyTrue(newAccount.isDataMatched(driver, customerName, AbstractPageUI.DYNAMIC_DATA_VALUE, "Customer Name"));
@@ -260,6 +261,9 @@ public class TransactionFlow extends AbstractTest {
 	public void TC_06_TransferMoney() {
 		log.info("Transfer Money - Step 01: Open Fund Transfer page");
 		fundTransferPage = (FundTransferPageObjects) withdrawalPage.openAnySubPage(driver, "Fund Transfer");
+		
+		log.info("Transfer Money - Step 1.1: Create a payee account");
+		payeeAccount = fundTransferPage.createNewAccount(newAccount, customerID, accountType, initialAmount);
 
 		log.info("Transfer Money - Step 02: Check if the Fund Transfer form display");
 		verifyTrue(fundTransferPage.isPageDisplayed(driver, "Fund transfer"));
@@ -268,7 +272,7 @@ public class TransactionFlow extends AbstractTest {
 		fundTransferPage.fillInTextBox(driver, "Payers account no", accountNumber);
 		
 		log.info("Transfer Money - Step 04: Input Payee's account");
-		fundTransferPage.fillInTextBox(driver, "Payees account no", String.valueOf(Integer.valueOf(accountNumber)-1));
+		fundTransferPage.fillInTextBox(driver, "Payees account no", payeeAccount);
 		
 		log.info("Transfer Money - Step 05: Input transfer amount");
 		fundTransferPage.fillInTextBox(driver, "Amount", String.valueOf(transferAmount));
@@ -285,7 +289,7 @@ public class TransactionFlow extends AbstractTest {
 		
 		log.info("Transfer Money - Step 09: Check if the data matched correctly");
 		verifyTrue(fundTransferPage.isDataMatched(driver, accountNumber, AbstractPageUI.DYNAMIC_DATA_VALUE, "From Account Number"));
-		verifyTrue(fundTransferPage.isDataMatched(driver, String.valueOf(Integer.valueOf(accountNumber)-1), AbstractPageUI.DYNAMIC_DATA_VALUE, "To Account Number"));
+		verifyTrue(fundTransferPage.isDataMatched(driver, payeeAccount, AbstractPageUI.DYNAMIC_DATA_VALUE, "To Account Number"));
 		verifyTrue(fundTransferPage.isDataMatched(driver, String.valueOf(transferAmount), AbstractPageUI.DYNAMIC_DATA_VALUE, "Amount"));
 		verifyTrue(fundTransferPage.isDataMatched(driver, "Transfer", AbstractPageUI.DYNAMIC_DATA_VALUE, "Description"));
 	}
@@ -339,6 +343,9 @@ public class TransactionFlow extends AbstractTest {
 	
 	@Test
 	public void TC_09_DeleteCustomer() {
+		log.info("Delete Customer - Step 00: Delete payee account");
+		homePage.deleteCustomerAccount(deleteAccountPage, payeeAccount);
+		
 		log.info("Delete Customer - Step 01: Open Delete Customer page");
 		deleteCustomerPage = (DeleteCustomerPageObjects) homePage.openAnySubPage(driver, "Delete Customer");
 	

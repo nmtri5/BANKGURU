@@ -39,4 +39,5 @@ public class DeleteCustomerPageObjects extends AbstractPage {
 		public boolean isDeleteAccountFormDisplayed() {
 			return isElementDisplayed(driver, DeleteCustomerPageUI.DELETE_CUSTOMER_FORM_DISPLAYED);
 		}
+
 	}

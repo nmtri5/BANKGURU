@@ -15,15 +15,24 @@ public class HomePageObjects extends AbstractPage {
 	public HomePageObjects(WebDriver driver) {
 		this.driver = driver;
 	}
-	
+
 	public RegisterPageObjects openRegisterPage() {
 		waitForElementVisible(driver, LoginPageUI.HERE_LINK);
 		clickToElement(driver, LoginPageUI.HERE_LINK);
 		return PageFactoryManager.getRegisterPage(driver);
 	}
-	
+
 	public boolean isHomePageDisplayed() {
 		return isElementDisplayed(driver, HomePageUI.HOME_PAGE_WELCOME_TEXT);
 	}
-	
+
+	public void deleteCustomerAccount(DeleteAccountPageObjects deleteAccountPage, String payeeAccount) {
+		deleteAccountPage = (DeleteAccountPageObjects) openAnySubPage(driver, "Delete Account");
+
+		deleteAccountPage.fillInTextBox(driver, "Account No", payeeAccount);
+		deleteAccountPage.clickToSubmitButton();
+		deleteAccountPage.acceptAlert(driver);
+		deleteAccountPage.acceptAlert(driver);
+	}
+
 }

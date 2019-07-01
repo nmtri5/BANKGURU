@@ -79,6 +79,22 @@ public class FundTransferPageObjects extends AbstractPage {
 			return false;
 		}
 	}
+	
+	public String createNewAccount(NewAccountPageObjects newAccountPage, String customerID, String accountType, int initialDeposit) {
+		String payeeAccount;
+		
+		newAccountPage = (NewAccountPageObjects) openAnySubPage(driver, "New Account");
+		
+		newAccountPage.fillInTextBox(driver, "Customer id", customerID);
+		newAccountPage.selectAccountType(accountType);
+		newAccountPage.fillInTextBox(driver, "Initial deposit", String.valueOf(initialDeposit));
+		newAccountPage.clickSubmitButton();
+		
+		payeeAccount = newAccountPage.getAccountNumber();
+		
+		newAccountPage.openAnySubPage(driver, "Fund Transfer");
+		return payeeAccount;
+	}
 
 	public void clickToSubmitButton() {
 		waitForElementVisible(driver, FundTransferPageUI.SUBMIT_BUTTON);

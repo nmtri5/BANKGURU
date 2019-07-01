@@ -4,6 +4,7 @@
 		<listener class-name="org.uncommons.reportng.HTMLReporter" />
 		<listener class-name="org.uncommons.reportng.JUnitXMLReporter" />
 		<listener class-name="com.bankguru.commons.ExtentReportListener" />
+		<listener class-name="com.bankguru.commons.RetryListener" />
 		
 	</listeners>
 	<test name="Run test on Chrome browser">
